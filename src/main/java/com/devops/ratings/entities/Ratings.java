@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document("user_ratings")
+@Document(collection = "ratings-db")
 public class Ratings{
 
     

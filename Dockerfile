@@ -48,4 +48,4 @@ RUN mvn clean package -Dmaven.test.skip=true
 EXPOSE 8083
 
 # Run the ratings service
-CMD ["java", "-jar", "target/ratings-service.jar"]
+CMD ["java", "-jar", "target/Rating-0.0.1-SNAPSHOT.jar"]
