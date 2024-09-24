@@ -5,7 +5,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://13.127.217.126:8761/eureka
+      defaultZone: http://192.168.49.2:30902/eureka
 
 server:
   port: 8083
