@@ -5,7 +5,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://192.168.49.2:30902/eureka
+      defaultZone: http://192.168.49.2:31108/eureka
 
 server:
   port: 8083
@@ -13,8 +13,8 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://ratingsuser:admin123@ratings-db.cluster-c9q44804g06m.us-east-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false
-      database: ratings-db
+      uri: mongodb://ratingsuser:admin123@127.0.0.1:27017/
+      database: rating_db
       port: 27017
 
 

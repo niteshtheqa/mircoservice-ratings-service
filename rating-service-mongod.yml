@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rating-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rating-service
+      run: rating-service
+  template:
+    metadata:
+      labels:
+        app: rating-service
+        run: rating-service
+    spec:
+      containers:
+        - name: rating-service
+          image: nitesh2611/rating-service:03  # Replace with the correct image for rating-service
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          ports:
+            - containerPort: 8082  # Assuming rating-service listens on port 8082, replace if needed
+
+        - name: mongodb
+          image: mongo:4.4  # MongoDB 4.4 image
+          env:
+            - name: MONGO_INITDB_DATABASE
+              value: "rating_db"  # Optional: create a default database for rating-service
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: "ratingsuser"  # Root username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: "admin123"  # Root password
+          ports:
+            - containerPort: 27017  # Default MongoDB port
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: mongodb-persistent-storage
+              mountPath: /data/db  # Persistent storage for MongoDB data
+      volumes:
+        - name: mongodb-persistent-storage
+          emptyDir: { }  # Replace with PersistentVolumeClaim for persistent storage
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: rating-service
+spec:
+  selector:
+    app: rating-service
+  ports:
+    - protocol: TCP
+      port: 8082  # Expose the port that the rating-service container listens on
+      targetPort: 8082
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: rating-service-mongodb
+spec:
+  selector:
+    app: rating-service
+  ports:
+    - protocol: TCP
+      port: 27017  # Expose the MongoDB service on port 27017
+      targetPort: 27017
+  type: ClusterIP  # MongoDB service within the cluster, no external exposure
